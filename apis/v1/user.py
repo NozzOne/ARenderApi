@@ -3,10 +3,9 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.database.crud import create_user, get_user_by_email, get_users
 from app.database.db import Base, SessionLocal, engine
 from app.database.schemas import User, UserCreate
-from app.database.crud import get_user_by_email, get_users, create_user
-
 from app.exceptions import APIException
 
 Base.metadata.create_all(bind=engine)
