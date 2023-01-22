@@ -10,6 +10,7 @@ from apis import root
 from app.exceptions import APIException
 from app.util import convertStruct
 
+
 def create_app():
     app = FastAPI(
         title="Arender API",
@@ -40,4 +41,11 @@ def create_app():
     app.include_router(router=root, prefix="/api")
     return app
 
+
 app = create_app()
+
+if __name__ == "__main__":
+    uvicorn.run(app,
+                host="127.0.0.1",
+                port=8000,
+                log_level="info")
