@@ -5,6 +5,11 @@ import cv2
 import numpy as np
 import onnxruntime as rt
 
+file_path = "./app/core/model/isnetis.onnx"
+providers = ['CPUExecutionProvider']
+
+model = rt.InferenceSession(file_path, provider_options=providers)
+
 
 class ImageProcessing:
 
@@ -45,7 +50,7 @@ class ImageProcessing:
                   2:pw // 2 + w] = cv2.resize(img, (w, h))
         img_input = np.transpose(img_input, (2, 0, 1))
         img_input = img_input[np.newaxis, :]
-        mask = self.model.run(None, {'img': img_input})[0][0]
+        mask = model.run(None, {'img': img_input})[0][0]
         mask = np.transpose(mask, (1, 2, 0))
         mask = mask[ph // 2:ph // 2 + h, pw // 2:pw // 2 + w]
         mask = cv2.resize(mask, (w0, h0))[:, :, np.newaxis]
@@ -60,10 +65,6 @@ class ImageProcessing:
         return mask, img
 
     def process(self):
-        file_path = "./app/core/model/isnetis.onnx"
-        providers = ['CPUExecutionProvider']
-        self.model = rt.InferenceSession(
-            file_path, providers=providers)
         self.output_mask, self.output_img = self.rmbg_fn(
             self.img)
 
