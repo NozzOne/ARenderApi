@@ -60,9 +60,10 @@ class ImageProcessing:
         return mask, img
 
     def process(self):
+        file_path = "./app/core/model/isnetis.onnx"
         providers = ['CPUExecutionProvider']
         self.model = rt.InferenceSession(
-            "./app/core/model/isnetis.onnx", providers=providers)
+            file_path, providers=providers)
         self.output_mask, self.output_img = self.rmbg_fn(
             self.img)
 
